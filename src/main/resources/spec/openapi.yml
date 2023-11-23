@@ -1,0 +1,86 @@
+openapi: 3.0.1
+info:
+  title: Eligible Price by Date
+  description: Endpoint that finds the eligible product price by date
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+    description: local
+paths:
+  /price:
+    get:
+      tags:
+        - eligible-product-price
+      operationId: findEligiblePriceByDate
+      parameters:
+        - name: productId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: brandId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-localdatetime
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/PriceDTO'
+        '404':
+          description: Not Found
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+components:
+  schemas:
+    PriceDTO:
+      type: object
+      properties:
+        productId:
+          type: string
+          description: Product id
+          example: 35455
+        brandId:
+          type: string
+          description: Brand id
+          example: 1
+        priceList:
+          type: string
+          description: Price fare id
+          example: 1
+        startDate:
+          type: string
+          description: Start date for eligible price
+          format: date-localdatetime
+          example: 2018-03-20T09:12:28Z
+        endDate:
+          type: string
+          description: End date for eligible price
+          format: date-localdatetime
+          example: 2018-03-20T09:12:28Z
+        price:
+          type: number
+          description: Eligible price
+          format: decimal
+          example: 99.95
+        currency:
+          type: string
+          description: 3 letter currency code as defined by ISO-4217
+          format: iso-4217
+          example: EUR
+    ErrorMessage:
+      type: object
+      properties:
+        error:
+          type: string
